@@ -60,7 +60,9 @@ VALOR_REAL=1562500
 MUESTRAS=5
 
 # '>>' para seguir escribiendo. '>' para reescribir.
-printf "RESULTADOS\n===============\n\n" > $ARCHIVO_SALIDA
+printf "INFORMACIÓN DE LA CPU\n\n$(lscpu | grep -E "CPU|Ar|Model name:|Cach| proc")\n\n\n" > $ARCHIVO_SALIDA
+
+printf "RESULTADOS\n##################\n\n" >> $ARCHIVO_SALIDA
 
 for i in 1000 10000 100000 1000000 10000000
 do
