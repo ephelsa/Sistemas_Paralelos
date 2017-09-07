@@ -6,5 +6,5 @@
 > Error relativo.  
 > Eficiencia paralela.  
 
-
+1562499.75
 #### Universidad de Antioquia ####
