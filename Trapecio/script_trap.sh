@@ -19,6 +19,8 @@
 #	7-> NUM_HILOS corresponde al número de hilos.
 #	8-> T_MUESTRA corresponde al tiempo obtenido en cada muestra.
 #	9-> VALOR_MEDIDO corresponde al valor obtenido en la prueba.
+#	10-> SU corresponde al Speedup (TS -> Tiempo serial / TP -> Tiempo paralelo).
+#	11-> E corresponde a la eficiencia.
 
 # Consideraciones: Se utiliza python para el algunos cálculos, dado que
 # bash solo opera enteros. Además, se modificó el archivo C para que reciba
@@ -59,13 +61,17 @@ VALOR_REAL=1562500
 
 MUESTRAS=5
 
+CPU_INFO=$(lscpu | grep -E "CPU|Ar|Model name:|Cach| proc")
+
 # '>>' para seguir escribiendo. '>' para reescribir.
-printf "INFORMACIÓN DE LA CPU\n\n$(lscpu | grep -E "CPU|Ar|Model name:|Cach| proc")\n\n\n" > $ARCHIVO_SALIDA
+printf "INFORMACIÓN DE LA CPU\n\n$CPU_INFO\n\n\n" > $ARCHIVO_SALIDA
 
 printf "RESULTADOS\n##################\n\n" >> $ARCHIVO_SALIDA
 
 for i in 1000 10000 100000 1000000 10000000
 do
+	TS=0
+
 	NUM_TRAP=$i
 
 	echo "Trapecios: $NUM_TRAP"
@@ -91,6 +97,25 @@ do
 			sleep 0.1	# Pequeño delay.
 		done
 
+		# Cálculo del Sp
+		if [ $NUM_HILOS -eq 1 ]
+		then
+			TS=$T_PROMEDIO
+		else
+			TP=$T_PROMEDIO
+
+			SU=$(python -c "print ($TS / $TP)")
+			echo "Speedup: $SU" >> $ARCHIVO_SALIDA
+		fi
+
+		# Cálculo de la eficiencia
+		if [ $NUM_HILOS -ne 1 ]
+		then
+			E=$(python -c "print ($SU / $NUM_HILOS)")
+			echo "Eficiencia: $E" >> $ARCHIVO_SALIDA
+		fi
+
+		# Cálculo del error relativo
 		VALOR_MEDIDO=$(./trap $A $B $NUM_TRAP $NUM_HILOS 1 )
 
 		ERROR_R=$(python -c "print ($VALOR_MEDIDO - $VALOR_REAL) / $VALOR_REAL")
