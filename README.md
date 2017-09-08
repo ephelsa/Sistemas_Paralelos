@@ -6,4 +6,5 @@
 > Error relativo.  
 > Eficiencia paralela.  
 
+
 #### Universidad de Antioquia ####
