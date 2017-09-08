@@ -57,16 +57,21 @@ fi
 A=1
 B=50
 
-VALOR_REAL=1562500
+VALOR_REAL=1562499.75
 
 MUESTRAS=5
 
 CPU_INFO=$(lscpu | grep -E "CPU|Ar|Model name:|Cach| proc")
+OS=$(lsb_release -a)
 
 # '>>' para seguir escribiendo. '>' para reescribir.
-printf "INFORMACIÓN DE LA CPU\n\n$CPU_INFO\n\n\n" > $ARCHIVO_SALIDA
+printf "INFORMACIÓN DE LA CPU\n
+$CPU_INFO
+=========================
+$OS\n\n\n" > $ARCHIVO_SALIDA
 
-printf "RESULTADOS\n##################\n\n" >> $ARCHIVO_SALIDA
+printf "RESULTADOS\n
+##################\n\n" >> $ARCHIVO_SALIDA
 
 for i in 1000 10000 100000 1000000 10000000
 do
