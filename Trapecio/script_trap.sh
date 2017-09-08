@@ -70,7 +70,8 @@ $CPU_INFO
 =========================
 $OS\n\n\n" > $ARCHIVO_SALIDA
 
-printf "RESULTADOS\n
+printf "RESULTADOS
+Muestras: $MUESTRAS
 ##################\n\n" >> $ARCHIVO_SALIDA
 
 for i in 1000 10000 100000 1000000 10000000
@@ -97,7 +98,7 @@ do
 
 			T_PROMEDIO=$(python -c "print $T_MUESTRA/$MUESTRAS + $T_PROMEDIO")
 
-		 	echo $T_MUESTRA >> $ARCHIVO_SALIDA
+			#echo $T_MUESTRA >> $ARCHIVO_SALIDA
 
 			sleep 0.1	# Pequeño delay.
 		done
